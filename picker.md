@@ -16,7 +16,9 @@ this is just the planning stage.
 
 the picker does not perform the actual selection.
 instead, it defines the rules and expectations for how selection should work.
+## note
 
+this file is now maintained through pull requests to keep the workflow clean.
 the engine (python or js) will eventually implement these rules.
 ## future integration
 
