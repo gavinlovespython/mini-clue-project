@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>clue demo</title>
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+
+  <h1>clue picker demo</h1>
+
+  <button id="pick">pick a clue</button>
+  <p id="result"></p>
+
+  <script type="module">
+    import { pickClue } from './engine.js';
+
+    const clues = [
+      "red door",
+      "broken window",
+      "footprints",
+      "mysterious note"
+    ];
+
+    document.getElementById("pick").onclick = () => {
+      const r = pickClue(clues);
+      document.getElementById("result").textContent = r;
+    };
+  </script>
+
+</body>
+</html>
