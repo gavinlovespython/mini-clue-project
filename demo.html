@@ -23,7 +23,14 @@
 
     document.getElementById("pick").onclick = () => {
       const r = pickClue(clues);
-      document.getElementById("result").textContent = r;
+      const result = document.getElementById("result");
+result.textContent = r;
+
+if (r.includes("rare")) {
+  result.style.color = "purple";
+} else {
+  result.style.color = "black";
+}
     };
   </script>
 
