@@ -13,3 +13,7 @@
 - introduced configuration system (config.md)
 - added engine settings and future expansion options
 - system now supports customizable behavior
+## v0.4
+- improved picker.md with clearer purpose and structure
+- added notes about future integration with engine.js and engine.md
+- continued refining project documentation
