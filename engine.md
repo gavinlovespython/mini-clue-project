@@ -21,3 +21,16 @@ the engine is responsible for:
 - allow weighted clues  
 - allow categories  
 - allow multiple output formats  
+## code prototype (pseudo-python)
+
+def pick_clue():
+    with open("clue.txt", "r") as f:
+        clues = [line.strip() for line in f.readlines()]
+
+    # validation rules
+    clues = [c for c in clues if c]  # remove empty
+    clues = list(dict.fromkeys(clues))  # remove duplicates
+    clues = [c for c in clues if len(c) <= 120]  # length rule
+
+    import random
+    return random.choice(clues)
