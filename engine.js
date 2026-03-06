@@ -12,7 +12,7 @@ export function pickClue(clues) {
 
   // length rule
   clues = clues.filter(c => c.length <= 120);
-
+// explain rare clue probability for clarity
   // 5% chance to return a rare clue
   const rareChance = Math.random();
   if (rareChance < 0.05) {
