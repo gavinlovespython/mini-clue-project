@@ -47,3 +47,6 @@ result = pick_clue_with_config() print("chosen clue:", result)
 - plugin‑style extensions  
 
 ## example (pseudo‑python)
+## setup (optional)
+
+if you're using codespaces, python dependencies will install automatically from requirements.txt.
