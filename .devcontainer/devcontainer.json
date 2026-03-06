@@ -1,0 +1,14 @@
+{
+  "name": "clue-system",
+  "image": "mcr.microsoft.com/devcontainers/base:latest",
+  "features": {},
+  "customizations": {
+    "vscode": {
+      "settings": {},
+      "extensions": [
+        "ms-python.python"
+      ]
+    }
+  },
+  "postCreateCommand": "echo 'codespace ready'"
+}
