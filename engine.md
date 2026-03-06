@@ -34,3 +34,30 @@ def pick_clue():
 
     import random
     return random.choice(clues)
+## config-aware prototype
+
+def load_config():
+    return {
+        "allow_duplicates": False,
+        "max_length": 120,
+        "random_seed": None,
+        "output_format": "text"
+    }
+
+def pick_clue_with_config():
+    cfg = load_config()
+
+    with open("clue.txt", "r") as f:
+        clues = [line.strip() for line in f.readlines()]
+
+    # apply config rules
+    if not cfg["allow_duplicates"]:
+        clues = list(dict.fromkeys(clues))
+
+    clues = [c for c in clues if c and len(c) <= cfg["max_length"]]
+
+    import random
+    if cfg["random_seed"] is not None:
+        random.seed(cfg["random_seed"])
+
+    return random.choice(clues)
