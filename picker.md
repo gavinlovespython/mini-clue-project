@@ -1,1 +1,3 @@
-this file will later pick a clue
+# clue picker
+
+this file will eventually choose a clue from clue.txt
