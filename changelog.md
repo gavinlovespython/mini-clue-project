@@ -17,3 +17,7 @@
 - improved picker.md with clearer purpose and structure
 - added notes about future integration with engine.js and engine.md
 - continued refining project documentation
+## update 35
+- merged duplicate pickClue functions
+- added rare clue mechanic to final version
+- updated demo to highlight rare clues
