@@ -12,3 +12,12 @@ this document defines the rules for how the clue system should behave.
 - no clue may be an empty line  
 - no clue may contain more than 120 characters  
 - no duplicate clues are allowed  
+## dependency map
+
+clue.txt  →  picker.md  →  (future) engine  
+   |             |  
+   |             → uses the clues  
+   → provides data
+
+spec.md → defines the rules for all files  
+changelog.md → tracks project evolution
