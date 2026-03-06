@@ -1,6 +1,7 @@
 # clue picker
 
-this file will eventually choose a clue from clue.txt
+the picker is the conceptual layer that decides *how* a clue is chosen.
+it sits between the raw data (clue.txt) and the engine logic.
 
 ## how this will work
 
@@ -11,3 +12,14 @@ this is just the planning stage.
 - source file: clue.txt  
 - purpose: select one clue from the list  
 - status: planning stage  
+## role in the system
+
+the picker does not perform the actual selection.
+instead, it defines the rules and expectations for how selection should work.
+
+the engine (python or js) will eventually implement these rules.
+## future integration
+
+- connect picker.md logic to engine.md (python prototype)
+- connect picker.md logic to engine.js (javascript prototype)
+- allow picker to choose between engines based on config.md
