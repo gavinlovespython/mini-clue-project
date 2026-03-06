@@ -16,48 +16,50 @@ the engine is responsible for:
 6. choose one clue at random  
 7. output the chosen clue  
 
+## validation rules
+
+- empty clues are ignored  
+- duplicates are removed  
+- clues longer than 120 characters are removed  
+
+these rules keep the clue list clean and predictable.
+
+## rare clue mechanic
+
+the engine now includes a small “rare clue” feature.
+
+- there is a 5% chance to return a special clue  
+- this happens before the normal selection  
+- it adds a tiny bit of randomness and fun
+
+## code prototype (pseudo-python)
+def pick_clue(): with open("clue.txt", "r") as f: clues = [line.strip() for line in f.readlines()]
+# validation rules
+clues = [c for c in clues if c]  # remove empty
+clues = list(dict.fromkeys(clues))  # remove duplicates
+clues = [c for c in clues if len(c) <= 120]  # length rule
+
+import random
+
+# rare clue
+if random.random() < 0.05:
+    return "✨ rare clue found"
+
+return random.choice(clues)
+
+## javascript version
+
+the js version follows the same rules and includes the rare clue mechanic.
+export function pickClue(clues) { // remove empty clues = clues.filter(c => c.trim() !== "");
+// remove duplicates clues = [...new Set(clues)];
+// length rule clues = clues.filter(c => c.length <= 120);
+// 5% chance to return a rare clue const rareChance = Math.random(); if (rareChance < 0.05) { return "✨ rare clue found"; }
+// normal clue const index = Math.floor(Math.random() * clues.length); return clues[index]; }
+
 ## future expansion ideas
 
 - allow weighted clues  
 - allow categories  
 - allow multiple output formats  
-## code prototype (pseudo-python)
-
-def pick_clue():
-    with open("clue.txt", "r") as f:
-        clues = [line.strip() for line in f.readlines()]
-
-    # validation rules
-    clues = [c for c in clues if c]  # remove empty
-    clues = list(dict.fromkeys(clues))  # remove duplicates
-    clues = [c for c in clues if len(c) <= 120]  # length rule
-
-    import random
-    return random.choice(clues)
-## config-aware prototype
-
-def load_config():
-    return {
-        "allow_duplicates": False,
-        "max_length": 120,
-        "random_seed": None,
-        "output_format": "text"
-    }
-
-def pick_clue_with_config():
-    cfg = load_config()
-
-    with open("clue.txt", "r") as f:
-        clues = [line.strip() for line in f.readlines()]
-
-    # apply config rules
-    if not cfg["allow_duplicates"]:
-        clues = list(dict.fromkeys(clues))
-
-    clues = [c for c in clues if c and len(c) <= cfg["max_length"]]
-
-    import random
-    if cfg["random_seed"] is not None:
-        random.seed(cfg["random_seed"])
-
-    return random.choice(clues)
+- add a “super rare” clue tier  
+- add logging for debugging  
