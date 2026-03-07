@@ -10,3 +10,4 @@ it shows how to:
 - build tiny demos with html and css
 
 the goal is to keep everything simple so beginners can follow along without getting lost.
+each update is intentionally small so the learning curve stays gentle.
