@@ -22,6 +22,7 @@ this helps keep the engine focused on processing rather than decision logic.
 
 this file is now maintained through pull requests to keep the workflow clean.
 the engine (python or js) will eventually implement these rules.
+this helps ensure changes stay organized and easy to review.
 ## future integration
 
 - connect picker.md logic to engine.md (python prototype)
