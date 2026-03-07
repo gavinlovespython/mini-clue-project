@@ -28,3 +28,4 @@ this helps ensure changes stay organized and easy to review.
 - connect picker.md logic to engine.md (python prototype)
 - connect picker.md logic to engine.js (javascript prototype)
 - allow picker to choose between engines based on config.md
+- document how the picker hands off data to the engine
