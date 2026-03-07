@@ -21,3 +21,7 @@
 - merged duplicate pickClue functions
 - added rare clue mechanic to final version
 - updated demo to highlight rare clues
+## [1.0.6] - Architecture clarifications and spacing improvements
+- Added clarification sentence to data flow section
+- Improved spacing before future architecture goals
+- Enhanced readability with small structural adjustments
