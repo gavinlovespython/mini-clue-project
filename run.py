@@ -4,8 +4,11 @@
 from engine import pick_clue_with_config
 
 def main():
-    result = pick_clue_with_config()
-    print("chosen clue:", result)
+    try:
+        result = pick_clue_with_config()
+        print("chosen clue:", result)
+    except Exception as e:
+        print("an error occurred while picking a clue:", e)
 
 if __name__ == "__main__":
     main()
