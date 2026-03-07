@@ -1,4 +1,5 @@
 # clue system
+_status: actively improved with small, beginner-friendly updates_
 
 this project is a simple, text‑based setup for storing clues, checking them, and picking one at random. it started small and has been growing step by step, with each update building toward a more complete system.
 
