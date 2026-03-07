@@ -13,6 +13,7 @@ this is just the planning stage.
 - source file: clue.txt  
 - purpose: select one clue from the list  
 - status: planning stage  
+- maintained: updated as design evolves
 ## role in the system
 
 the picker does not perform the actual selection.
