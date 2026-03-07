@@ -17,6 +17,7 @@ this is just the planning stage.
 
 the picker does not perform the actual selection.
 instead, it defines the rules and expectations for how selection should work.
+this helps keep the engine focused on processing rather than decision logic.
 ## note
 
 this file is now maintained through pull requests to keep the workflow clean.
