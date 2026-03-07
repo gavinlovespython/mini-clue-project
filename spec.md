@@ -7,6 +7,7 @@ this document defines the rules for how the clue system should behave.
 1. all clues must be stored in clue.txt  
 2. the picker must choose exactly one clue  
 3. the system must remain simple and text‑based  
+these rules ensure the system stays predictable and easy to maintain. 
 ## data validation
 
 - no clue may be an empty line  
