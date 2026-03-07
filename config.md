@@ -13,6 +13,8 @@ this file defines adjustable settings for the clue engine.
 
 ## future settings
 
+(these are not implemented yet, just planned ideas)
+
 - clue categories
 - weighted randomness
 - multiple clue sources
