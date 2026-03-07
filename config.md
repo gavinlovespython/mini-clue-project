@@ -4,6 +4,8 @@ this file defines adjustable settings for the clue engine.
 
 ## engine settings
 
+(note: these defaults are chosen for simplicity)
+
 - allow_duplicates: false
 - max_length: 120
 - random_seed: none
