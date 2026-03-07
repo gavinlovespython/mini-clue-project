@@ -1,5 +1,6 @@
 // Dev container configuration for the clue-system project
 {
+
   "name": "clue-system",
   "image": "mcr.microsoft.com/devcontainers/base:latest",
   "features": {},
