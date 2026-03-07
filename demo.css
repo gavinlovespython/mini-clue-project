@@ -8,6 +8,9 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  background-color: #f0f0f0;
+}
 #result {
   margin-top: 15px;
   font-weight: bold;
