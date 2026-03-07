@@ -6,10 +6,18 @@
 </head>
 <body>
 
-  <h1>clue picker demo</h1>
+  <header>
+    <h1>clue picker demo</h1>
+  </header>
 
-  <button id="pick">pick a clue</button>
-  <p id="result"></p>
+  <main class="container">
+    <button id="pick">pick a clue</button>
+    <p id="result"></p>
+  </main>
+
+  <footer>
+    <p>mini-clue-project demo</p>
+  </footer>
 
   <script type="module">
     import { pickClue } from './engine.js';
@@ -24,13 +32,13 @@
     document.getElementById("pick").onclick = () => {
       const r = pickClue(clues);
       const result = document.getElementById("result");
-result.textContent = r;
+      result.textContent = r;
 
-if (r.includes("rare")) {
-  result.style.color = "purple";
-} else {
-  result.style.color = "black";
-}
+      if (r.includes("rare")) {
+        result.style.color = "purple";
+      } else {
+        result.style.color = "black";
+      }
     };
   </script>
 
