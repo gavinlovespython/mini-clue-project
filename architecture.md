@@ -5,6 +5,7 @@ this document defines the high-level architecture of the clue system.
 ## overview
 
 the system consists of four core components:
+each part has a single, focused responsibility.
 
 1. **clue storage**  
    - implemented by clue.txt  
@@ -32,4 +33,5 @@ clue.txt → validation rules → engine → output clue
 - allow multiple input sources (not just clue.txt)  
 - support multiple output formats  
 - introduce configuration files  
-- support plugin-like extensions  
+- support plugin-like extensions
+- improve documentation for each architectural layer
