@@ -7,6 +7,7 @@ it sits between the raw data (clue.txt) and the engine logic.
 
 the picker will eventually read all clues from clue.txt and choose one at random.
 this is just the planning stage.
+
 ## metadata
 
 - source file: clue.txt  
