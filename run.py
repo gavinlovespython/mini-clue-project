@@ -4,6 +4,7 @@
 from engine import pick_clue_with_config
 
 def main():
+    print("starting clue system...")
     try:
         result = pick_clue_with_config()
         print("chosen clue:", result)
