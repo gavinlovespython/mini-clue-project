@@ -6,6 +6,7 @@ from engine import load_clues
 from config import load_config
 
 last_clue = None
+print("system initialized")
 
 def show_menu():
     print("\n=== clue system menu ===")
