@@ -2,8 +2,10 @@
 # upgraded entry point for the clue system
 
 from engine import pick_clue_with_config
-from engine import load_clues  # assuming this exists in your engine
-from config import load_config  # assuming this exists too
+from engine import load_clues
+from config import load_config
+
+last_clue = None
 
 def show_menu():
     print("\n=== clue system menu ===")
@@ -11,11 +13,14 @@ def show_menu():
     print("2. show total number of clues")
     print("3. preview rare clues")
     print("4. exit")
+    print("5. show last picked clue")
     print("========================")
 
 def action_pick_clue():
+    global last_clue
     try:
         result = pick_clue_with_config()
+        last_clue = result
         print("\nchosen clue:", result)
     except Exception as e:
         print("error picking clue:", e)
@@ -40,6 +45,12 @@ def action_preview_rare():
     except Exception as e:
         print("error reading rare clues:", e)
 
+def action_show_last():
+    if last_clue is None:
+        print("\nno clue has been picked yet.")
+    else:
+        print("\nlast picked clue:", last_clue)
+
 def main():
     print("starting upgraded clue system...")
 
@@ -56,6 +67,8 @@ def main():
         elif choice == "4":
             print("goodbye!")
             break
+        elif choice == "5":
+            action_show_last()
         else:
             print("invalid choice, try again.")
 
