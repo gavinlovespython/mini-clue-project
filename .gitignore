@@ -11,3 +11,11 @@ node_modules/
 
 # system files
 .DS_Store
+
+# build output
+dist/
+build/
+
+# logs and temp files
+*.log
+*.tmp
