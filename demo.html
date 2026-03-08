@@ -1,47 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>clue demo</title>
+  <meta charset="UTF-8">
+  <title>clue picker demo</title>
   <link rel="stylesheet" href="demo.css">
 </head>
+
 <body>
+  <div class="container">
+    <h1>clue picker demo</h1>
+    <p class="subtitle">simple demo interface.</p>
 
-  <header>
-  <h1>clue picker demo</h1>
-  <p class="subtitle">simple demo interface</p>
-</header>
+    <button id="pick" class="btn" title="pick a clue">pick a clue</button>
 
-  <main class="container">
-    <button id="pick" class="btn">pick a clue</button>
-    <p id="result"></p>
-  </main>
+    <div id="result"></div>
+  </div>
 
-  <footer>
-    <p>mini-clue-project demo</p>
-  </footer>
-
-  <script type="module">
-    import { pickClue } from './engine.js';
-
-    const clues = [
-      "red door",
-      "broken window",
-      "footprints",
-      "mysterious note"
-    ];
-
-    document.getElementById("pick").onclick = () => {
-      const r = pickClue(clues);
-      const result = document.getElementById("result");
-      result.textContent = r;
-
-      if (r.includes("rare")) {
-        result.style.color = "purple";
-      } else {
-        result.style.color = "black";
-      }
-    };
-  </script>
-
+  <script src="engine.js"></script>
 </body>
 </html>
