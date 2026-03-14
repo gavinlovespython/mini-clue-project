@@ -24,11 +24,16 @@ fn preview_random_clues(clues: &Vec<&str>) {
     }
 }
 
+fn show_total(clues: &Vec<&str>) {
+    println!("\ntotal clues available: {}", clues.len());
+}
+
 fn show_menu() {
     println!("\n=== rust demo menu ===");
     println!("1. pick a clue");
     println!("2. preview 3 random clues");
     println!("3. exit");
+    println!("4. show total clues");
     println!("======================");
 }
 
@@ -52,6 +57,9 @@ fn main() {
             "3" => {
                 println!("goodbye!");
                 break;
+            }
+            "4" => {
+                show_total(&clues);
             }
             _ => println!("invalid choice"),
         }
