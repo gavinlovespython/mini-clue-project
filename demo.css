@@ -48,3 +48,9 @@ button:active {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
+
+/* accent line + tiny polish */
+.accent-line {
+  border: 0;
+  border-top: 1px solid #ddd;
+}
