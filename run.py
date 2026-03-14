@@ -1,5 +1,5 @@
 # run.py
-# upgraded entry point for the clue system
+# entry point for the clue system
 
 from engine import pick_clue_with_config
 from engine import load_clues
@@ -15,6 +15,8 @@ def show_menu():
     print("3. preview rare clues")
     print("4. exit")
     print("5. show last picked clue")
+    print("6. reload config")
+    print("7. test multiple picks")
     print("========================")
 
 def action_pick_clue():
@@ -52,8 +54,29 @@ def action_show_last():
     else:
         print("\nlast picked clue:", last_clue)
 
+def action_reload_config():
+    try:
+        cfg = load_config()
+        print("\nconfig reloaded. keys:", ", ".join(cfg.keys()))
+    except Exception as e:
+        print("error reloading config:", e)
+
+def action_test_multiple():
+    try:
+        count = input("\nhow many picks? ").strip()
+        if not count.isdigit():
+            print("invalid number.")
+            return
+        count = int(count)
+        print(f"\nrunning {count} picks...")
+        for i in range(count):
+            result = pick_clue_with_config()
+            print(f"{i+1}. {result}")
+    except Exception as e:
+        print("error during test:", e)
+
 def main():
-    print("starting upgraded clue system...")
+    print("starting clue system...")
 
     while True:
         show_menu()
@@ -70,6 +93,10 @@ def main():
             break
         elif choice == "5":
             action_show_last()
+        elif choice == "6":
+            action_reload_config()
+        elif choice == "7":
+            action_test_multiple()
         else:
             print("invalid choice, try again.")
 
