@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0] - documentation and system updates
+- Rewrote rare-clues.md for clarity and structure
+- Expanded placeholder.md with new planning notes
+- Updated devcontainer.json with Python tools and setup improvements
+- Improved config.md wording and added minor settings
+- Added new menu options and safer flow to run.py
+
 ## [1.0.9] - demo.html micro‑polish
 - Added a period to the subtitle for cleaner wording
 - Added a title attribute to the pick button
