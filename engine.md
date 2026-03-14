@@ -56,11 +56,17 @@ these rules keep the clue list clean and predictable.
 
 ## rare clue mechanic
 
-the engine now includes a small “rare clue” feature.
+the engine now includes a small rare clue feature.
 
 - there is a 5% chance to return a special clue  
 - this happens before the normal selection  
 - it adds a tiny bit of randomness and fun
+
+## randomness notes
+
+the engine uses simple uniform randomness when selecting a clue.  
+each validated clue has an equal chance of being chosen unless a future feature changes the weighting.  
+this keeps the behavior predictable and easy to test.
 
 ## code prototype (pseudo-python)
 def pick_clue():
@@ -110,5 +116,5 @@ export function pickClue(clues) {
 - allow weighted clues  
 - allow categories  
 - allow multiple output formats  
-- add a “super rare” clue tier  
+- add a super rare clue tier  
 - add logging for debugging
