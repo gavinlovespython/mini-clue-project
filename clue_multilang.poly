@@ -1,0 +1,482 @@
+###############################################
+# PYTHON SECTION
+###############################################
+# python: clue utilities and transformations
+
+import random
+import string
+
+def py_reverse(text):
+    return text[::-1]
+
+def py_upper(text):
+    return text.upper()
+
+def py_lower(text):
+    return text.lower()
+
+def py_title(text):
+    return text.title()
+
+def py_shuffle(text):
+    chars = list(text)
+    random.shuffle(chars)
+    return "".join(chars)
+
+def py_mask_vowels(text, mask="*"):
+    vowels = "aeiouAEIOU"
+    return "".join(mask if c in vowels else c for c in text)
+
+def py_only_letters(text):
+    return "".join(c for c in text if c.isalpha() or c.isspace())
+
+def py_random_suffix(text, length=4):
+    suffix = "".join(random.choice(string.ascii_lowercase) for _ in range(length))
+    return f"{text} [{suffix}]"
+
+def py_stats(text):
+    words = text.split()
+    return {
+        "length": len(text),
+        "words": len(words),
+        "avg_word_length": sum(len(w) for w in words) / len(words) if words else 0,
+        "unique_chars": len(set(text)),
+    }
+
+def py_preview(text):
+    stats = py_stats(text)
+    return f"clue: {text} | length={stats['length']} words={stats['words']}"
+
+if __name__ == "__main__":
+    sample = "example clue for python"
+    print("python reverse:", py_reverse(sample))
+    print("python upper:", py_upper(sample))
+    print("python shuffle:", py_shuffle(sample))
+    print("python masked:", py_mask_vowels(sample))
+    print("python letters only:", py_only_letters(sample))
+    print("python suffix:", py_random_suffix(sample))
+    print("python stats:", py_stats(sample))
+    print("python preview:", py_preview(sample))
+
+
+###############################################
+# JAVASCRIPT SECTION
+###############################################
+/*
+javascript: clue utilities for formatting and randomization
+run with: node clue_multilang.poly (after extraction)
+*/
+
+function jsReverse(text) {
+    return text.split("").reverse().join("");
+}
+
+function jsUpper(text) {
+    return text.toUpperCase();
+}
+
+function jsLower(text) {
+    return text.toLowerCase();
+}
+
+function jsShuffle(text) {
+    return text
+        .split("")
+        .sort(() => Math.random() - 0.5)
+        .join("");
+}
+
+function jsMaskVowels(text, mask = "*") {
+    return text.replace(/[aeiouAEIOU]/g, mask);
+}
+
+function jsStats(text) {
+    const words = text.trim().split(/\s+/).filter(Boolean);
+    const length = text.length;
+    const wordCount = words.length;
+    const avgWordLength =
+        wordCount === 0
+            ? 0
+            : words.reduce((sum, w) => sum + w.length, 0) / wordCount;
+    const uniqueChars = new Set(text.split("")).size;
+    return { length, wordCount, avgWordLength, uniqueChars };
+}
+
+function jsPreview(text) {
+    const stats = jsStats(text);
+    return `clue: ${text} | length=${stats.length} words=${stats.wordCount}`;
+}
+
+const jsSample = "example clue for javascript";
+console.log("js reverse:", jsReverse(jsSample));
+console.log("js upper:", jsUpper(jsSample));
+console.log("js shuffle:", jsShuffle(jsSample));
+console.log("js masked:", jsMaskVowels(jsSample));
+console.log("js stats:", jsStats(jsSample));
+console.log("js preview:", jsPreview(jsSample));
+
+
+###############################################
+# HTML SECTION
+###############################################
+<!--
+html: simple ui for clue preview and transformation
+open this file in a browser after extraction
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>clue preview ui</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 16px 20px 24px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        h1 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+        textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 8px;
+            margin-right: 6px;
+            padding: 6px 10px;
+            font-size: 13px;
+            border-radius: 4px;
+            border: 1px solid #888;
+            background: #fafafa;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #f0f0f0;
+        }
+        .output {
+            margin-top: 12px;
+            padding: 8px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
+            border: 1px solid #ddd;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>clue preview</h1>
+        <textarea id="clueInput">example clue from html ui</textarea>
+        <div>
+            <button onclick="doReverse()">reverse</button>
+            <button onclick="doUpper()">upper</button>
+            <button onclick="doStats()">stats</button>
+        </div>
+        <div id="output" class="output"></div>
+    </div>
+    <script>
+        function getText() {
+            return document.getElementById("clueInput").value;
+        }
+        function setOutput(text) {
+            document.getElementById("output").textContent = text;
+        }
+        function doReverse() {
+            const t = getText();
+            setOutput(t.split("").reverse().join(""));
+        }
+        function doUpper() {
+            const t = getText();
+            setOutput(t.toUpperCase());
+        }
+        function doStats() {
+            const t = getText();
+            const words = t.trim().split(/\s+/).filter(Boolean);
+            const stats = {
+                length: t.length,
+                words: words.length
+            };
+            setOutput("length=" + stats.length + " words=" + stats.words);
+        }
+    </script>
+</body>
+</html>
+
+
+###############################################
+# CSS SECTION
+###############################################
+/*
+css: standalone styling for a potential external clue ui
+after extraction, this can be linked from an html file
+*/
+
+:root {
+    --bg: #101014;
+    --panel: #181820;
+    --accent: #4f8cff;
+    --text-main: #f5f5f7;
+    --text-muted: #a0a0b0;
+}
+
+body.clue-theme {
+    background: var(--bg);
+    color: var(--text-main);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
+    padding: 24px;
+}
+
+.clue-panel {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--panel);
+    border-radius: 10px;
+    padding: 18px 20px 22px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+
+.clue-panel h1 {
+    font-size: 20px;
+    margin: 0 0 10px;
+}
+
+.clue-panel p.description {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0 0 12px;
+}
+
+.clue-panel textarea {
+    width: 100%;
+    min-height: 90px;
+    border-radius: 6px;
+    border: 1px solid #333645;
+    background: #111119;
+    color: var(--text-main);
+    padding: 8px;
+    font-family: monospace;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.clue-panel .actions {
+    margin-top: 10px;
+}
+
+.clue-panel button {
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-right: 6px;
+}
+
+.clue-panel button.secondary {
+    background: transparent;
+    border: 1px solid #3a3a4a;
+    color: var(--text-main);
+}
+
+.clue-panel button:hover {
+    filter: brightness(1.05);
+}
+
+.clue-panel .output {
+    margin-top: 12px;
+    padding: 8px;
+    background: #111119;
+    border-radius: 6px;
+    border: 1px solid #333645;
+    font-family: monospace;
+    font-size: 13px;
+    white-space: pre-wrap;
+}
+
+
+###############################################
+# RUST SECTION
+###############################################
+// rust: simple clue utilities library
+// after extraction, save as clue_tools.rs and compile with `rustc clue_tools.rs`
+
+fn reverse(s: &str) -> String {
+    s.chars().rev().collect()
+}
+
+fn upper(s: &str) -> String {
+    s.to_uppercase()
+}
+
+fn lower(s: &str) -> String {
+    s.to_lowercase()
+}
+
+fn word_count(s: &str) -> usize {
+    s.split_whitespace().count()
+}
+
+fn unique_chars(s: &str) -> usize {
+    use std::collections::HashSet;
+    let mut set = HashSet::new();
+    for ch in s.chars() {
+        set.insert(ch);
+    }
+    set.len()
+}
+
+fn stats(s: &str) -> (usize, usize, usize) {
+    let len = s.len();
+    let words = word_count(s);
+    let uniq = unique_chars(s);
+    (len, words, uniq)
+}
+
+fn mask_vowels(s: &str, mask: char) -> String {
+    let vowels = "aeiouAEIOU";
+    s.chars()
+        .map(|c| if vowels.contains(c) { mask } else { c })
+        .collect()
+}
+
+fn preview(s: &str) -> String {
+    let (len, words, uniq) = stats(s);
+    format!("clue: {} | len={} words={} unique={}", s, len, words, uniq)
+}
+
+fn main() {
+    let sample = "example clue for rust";
+    println!("rust reverse: {}", reverse(sample));
+    println!("rust upper: {}", upper(sample));
+    println!("rust lower: {}", lower(sample));
+    println!("rust mask vowels: {}", mask_vowels(sample, '*'));
+    let (len, words, uniq) = stats(sample);
+    println!("rust stats: len={} words={} unique={}", len, words, uniq);
+    println!("rust preview: {}", preview(sample));
+}
+
+
+###############################################
+# FORTRAN SECTION (for fun, a bit more)
+###############################################
+C fortran: simple clue utilities
+C after extraction, save as clue_tools.f90 and compile with:
+C   gfortran clue_tools.f90 -o clue_tools
+
+      PROGRAM CLUE_MAIN
+      IMPLICIT NONE
+      CHARACTER(LEN=80) :: CLUE
+      INTEGER :: L, W, I
+      CHARACTER(LEN=1) :: C
+      LOGICAL :: INWORD
+
+      CLUE = "example clue for fortran utilities"
+      CALL CLUE_STATS(CLUE, L, W)
+      PRINT *, "fortran clue: ", TRIM(CLUE)
+      PRINT *, "length:", L, "words:", W
+
+      PRINT *, "masked vowels:"
+      CALL MASK_VOWELS(CLUE)
+
+      PRINT *, "uppercase:"
+      CALL TO_UPPER(CLUE)
+
+      PRINT *, "character codes:"
+      DO I = 1, LEN_TRIM(CLUE)
+         C = CLUE(I:I)
+         PRINT *, I, C, ICHAR(C)
+      END DO
+
+      END PROGRAM CLUE_MAIN
+
+
+      SUBROUTINE CLUE_STATS(TEXT, LENGTH, WORDS)
+      IMPLICIT NONE
+      CHARACTER(LEN=*), INTENT(IN) :: TEXT
+      INTEGER, INTENT(OUT) :: LENGTH, WORDS
+      INTEGER :: I, N
+      CHARACTER(LEN=1) :: C
+      LOGICAL :: INWORD
+
+      N = LEN_TRIM(TEXT)
+      LENGTH = N
+      WORDS = 0
+      INWORD = .FALSE.
+
+      DO I = 1, N
+         C = TEXT(I:I)
+         IF (C .EQ. ' ') THEN
+            IF (INWORD) THEN
+               INWORD = .FALSE.
+            END IF
+         ELSE
+            IF (.NOT. INWORD) THEN
+               WORDS = WORDS + 1
+               INWORD = .TRUE.
+            END IF
+         END IF
+      END DO
+
+      END SUBROUTINE CLUE_STATS
+
+
+      SUBROUTINE MASK_VOWELS(TEXT)
+      IMPLICIT NONE
+      CHARACTER(LEN=*), INTENT(IN) :: TEXT
+      INTEGER :: I, N
+      CHARACTER(LEN=1) :: C
+
+      N = LEN_TRIM(TEXT)
+      DO I = 1, N
+         C = TEXT(I:I)
+         IF (C .EQ. 'A' .OR. C .EQ. 'E' .OR. C .EQ. 'I' .OR.
+     &       C .EQ. 'O' .OR. C .EQ. 'U' .OR.
+     &       C .EQ. 'a' .OR. C .EQ. 'e' .OR. C .EQ. 'i' .OR.
+     &       C .EQ. 'o' .OR. C .EQ. 'u') THEN
+            WRITE(*,'(A)', ADVANCE='NO') '*'
+         ELSE
+            WRITE(*,'(A)', ADVANCE='NO') C
+         END IF
+      END DO
+      WRITE(*,*)
+      END SUBROUTINE MASK_VOWELS
+
+
+      SUBROUTINE TO_UPPER(TEXT)
+      IMPLICIT NONE
+      CHARACTER(LEN=*), INTENT(IN) :: TEXT
+      INTEGER :: I, N
+      CHARACTER(LEN=1) :: C
+
+      N = LEN_TRIM(TEXT)
+      DO I = 1, N
+         C = TEXT(I:I)
+         IF (C .GE. 'a' .AND. C .LE. 'z') THEN
+            C = CHAR(ICHAR(C) - 32)
+         END IF
+         WRITE(*,'(A)', ADVANCE='NO') C
+      END DO
+      WRITE(*,*)
+      END SUBROUTINE TO_UPPER
