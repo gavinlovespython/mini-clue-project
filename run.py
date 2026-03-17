@@ -1,11 +1,14 @@
 # run.py
-# entry point for the clue system
+# upgraded entry point for the clue system
 
 from engine import pick_clue_with_config
 from engine import load_clues
 from config import load_config
 
 last_clue = None
+clue_history = []
+debug_override = None
+
 print("system initialized")
 
 def show_menu():
@@ -17,13 +20,31 @@ def show_menu():
     print("5. show last picked clue")
     print("6. reload config")
     print("7. test multiple picks")
+    print("8. show clue history")
+    print("9. toggle debug mode")
     print("========================")
+
+def debug_print(msg):
+    cfg = load_config()
+    debug_enabled = cfg.get("debug", False)
+
+    if debug_override is not None:
+        debug_enabled = debug_override
+
+    if debug_enabled:
+        print("[debug]", msg)
 
 def action_pick_clue():
     global last_clue
     try:
+        debug_print("starting clue pick")
         result = pick_clue_with_config()
         last_clue = result
+        clue_history.append(result)
+
+        debug_print(f"picked clue: {result}")
+        debug_print(f"history size: {len(clue_history)}")
+
         print("\nchosen clue:", result)
     except Exception as e:
         print("error picking clue:", e)
@@ -71,9 +92,32 @@ def action_test_multiple():
         print(f"\nrunning {count} picks...")
         for i in range(count):
             result = pick_clue_with_config()
+            clue_history.append(result)
             print(f"{i+1}. {result}")
     except Exception as e:
         print("error during test:", e)
+
+def action_show_history():
+    if not clue_history:
+        print("\nno clues have been picked yet.")
+        return
+
+    print("\n=== clue history ===")
+    for i, c in enumerate(clue_history, start=1):
+        print(f"{i}. {c}")
+    print("====================")
+
+def action_toggle_debug():
+    global debug_override
+    if debug_override is None:
+        debug_override = True
+        print("\ndebug mode forced ON")
+    elif debug_override is True:
+        debug_override = False
+        print("\ndebug mode forced OFF")
+    else:
+        debug_override = None
+        print("\ndebug mode returned to config-controlled")
 
 def main():
     print("starting clue system...")
@@ -97,10 +141,14 @@ def main():
             action_reload_config()
         elif choice == "7":
             action_test_multiple()
+        elif choice == "8":
+            action_show_history()
+        elif choice == "9":
+            action_toggle_debug()
         else:
             print("invalid choice, try again.")
 
 if __name__ == "__main__":
     main()
 
-# coauthor test line v2
+# coauthor test line v3
