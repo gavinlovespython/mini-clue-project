@@ -1,63 +1,85 @@
-###############################################
-# PYTHON SECTION
-###############################################
-# python: clue utilities and transformations
+# ============================
+# PYTHON MODULE: clue_tools.py
+# Updated + expanded utilities
+# ============================
 
 import random
 import string
+from typing import Dict, List
 
-def py_reverse(text):
-    return text[::-1]
 
-def py_upper(text):
-    return text.upper()
+def _normalize(text: str) -> str:
+    """
+    Internal helper to normalize whitespace and strip leading/trailing spaces.
+    """
+    return " ".join(text.strip().split())
 
-def py_lower(text):
-    return text.lower()
 
-def py_title(text):
-    return text.title()
+def reverse_clue(text: str) -> str:
+    """
+    Return the clue reversed.
+    """
+    cleaned = _normalize(text)
+    return cleaned[::-1]
 
-def py_shuffle(text):
-    chars = list(text)
-    random.shuffle(chars)
+
+def shuffle_clue(text: str) -> str:
+    """
+    Shuffle characters in a clue using a secure random shuffle.
+    """
+    cleaned = _normalize(text)
+    chars = list(cleaned)
+    random.SystemRandom().shuffle(chars)
     return "".join(chars)
 
-def py_mask_vowels(text, mask="*"):
-    vowels = "aeiouAEIOU"
-    return "".join(mask if c in vowels else c for c in text)
 
-def py_only_letters(text):
-    return "".join(c for c in text if c.isalpha() or c.isspace())
-
-def py_random_suffix(text, length=4):
-    suffix = "".join(random.choice(string.ascii_lowercase) for _ in range(length))
-    return f"{text} [{suffix}]"
-
-def py_stats(text):
-    words = text.split()
+def clue_stats(text: str) -> Dict[str, int]:
+    """
+    Return simple statistics about a clue.
+    """
+    cleaned = _normalize(text)
     return {
-        "length": len(text),
-        "words": len(words),
-        "avg_word_length": sum(len(w) for w in words) / len(words) if words else 0,
-        "unique_chars": len(set(text)),
+        "length": len(cleaned),
+        "words": len(cleaned.split()),
+        "unique_chars": len(set(cleaned)),
+        "punctuation_count": sum(1 for c in cleaned if c in string.punctuation),
     }
 
-def py_preview(text):
-    stats = py_stats(text)
-    return f"clue: {text} | length={stats['length']} words={stats['words']}"
+
+def emphasize_clue(text: str) -> str:
+    """
+    Add a simple emphasis transformation:
+    - Capitalize each word
+    - Surround with decorative markers
+    """
+    cleaned = _normalize(text)
+    emphasized = " ".join(word.capitalize() for word in cleaned.split())
+    return f"★ {emphasized} ★"
+
+
+def batch_process(clues: List[str]) -> List[Dict[str, str]]:
+    """
+    Process a list of clues and return a structured summary for each.
+    """
+    results = []
+    for clue in clues:
+        cleaned = _normalize(clue)
+        results.append({
+            "original": cleaned,
+            "reversed": reverse_clue(cleaned),
+            "shuffled": shuffle_clue(cleaned),
+            "emphasized": emphasize_clue(cleaned),
+        })
+    return results
+
 
 if __name__ == "__main__":
-    sample = "example clue for python"
-    print("python reverse:", py_reverse(sample))
-    print("python upper:", py_upper(sample))
-    print("python shuffle:", py_shuffle(sample))
-    print("python masked:", py_mask_vowels(sample))
-    print("python letters only:", py_only_letters(sample))
-    print("python suffix:", py_random_suffix(sample))
-    print("python stats:", py_stats(sample))
-    print("python preview:", py_preview(sample))
-
+    sample = "example clue for testing"
+    print("reverse:", reverse_clue(sample))
+    print("shuffle:", shuffle_clue(sample))
+    print("stats:", clue_stats(sample))
+    print("emphasize:", emphasize_clue(sample))
+    print("batch:", batch_process([sample, "another clue"]))
 
 ###############################################
 # JAVASCRIPT SECTION
