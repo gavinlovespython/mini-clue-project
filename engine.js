@@ -1,5 +1,7 @@
 export function pickClue(clues, options = {}) {
-
+    // small helper: normalize whitespace
+    const safeTrim = (str) => str.replace(/\s+/g, " ").trim();
+    
     // config with optional features
     const config = {
         logging: options.logging || false,
@@ -28,7 +30,7 @@ export function pickClue(clues, options = {}) {
     }
 
     // sanitize + trim
-    clues = clues.map(c => c.trim());
+    clues = clues.map(c => safeTrim(c));
 
     // remove empty
     clues = clues.filter(c => c !== "");
