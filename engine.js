@@ -1,7 +1,10 @@
 export function pickClue(clues, options = {}) {
     // small helper: normalize whitespace
     const safeTrim = (str) => str.replace(/\s+/g, " ").trim();
-    
+
+    // small helper: detect suspicious punctuation patterns
+    const isSuspicious = (str) => /(\?{3,}|!{3,})/.test(str);
+
     // config with optional features
     const config = {
         logging: options.logging || false,
@@ -72,6 +75,12 @@ export function pickClue(clues, options = {}) {
 
         // short clues get a tiny boost
         if (c.length < 40) weight += 0.5;
+
+        // NEW: suspicious punctuation gets a tiny penalty
+        if (isSuspicious(c)) {
+            weight -= 0.25;
+            log("suspicious punctuation detected:", c);
+        }
 
         return { text: c, weight };
     });
