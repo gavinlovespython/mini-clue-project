@@ -1,8 +1,287 @@
-# ============================
-# PYTHON MODULE: clue_tools.py
-# Updated + expanded utilities
-# ============================
+/* ============================
+   HTML SECTION: demo.html
+   ============================ */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>clue picker demo</title>
+  <link rel="stylesheet" href="demo.css">
+</head>
 
+<body>
+  <header class="header">
+    <p class="update-note">This is a small update for the demo branch.</p>
+    <h1>clue picker demo</h1>
+    <hr class="accent-line">
+    <p class="subtitle">simple demo interface.</p>
+  </header>
+
+  <main class="container">
+    <button id="pick" class="btn" title="pick a clue" aria-label="Pick a random clue">
+      pick a clue
+    </button>
+
+    <p class="hint">press the button to generate a clue.</p>
+
+    <div id="result" class="result-box" aria-live="polite"></div>
+  </main>
+
+  <script src="engine.js"></script>
+</body>
+</html>
+
+
+/* ============================
+   CSS SECTION: demo.css
+   ============================ */
+:root {
+  --bg: #0f172a;
+  --fg: #e5e7eb;
+  --accent: #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.2);
+  --border-soft: rgba(148, 163, 184, 0.4);
+  --btn-bg: #1d4ed8;
+  --btn-bg-hover: #2563eb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #1e293b 0, #020617 55%);
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.update-note {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-bottom: 0.5rem;
+}
+
+.container {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid var(--border-soft);
+  border-radius: 0.75rem;
+  padding: 1.75rem 2rem 2rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.9);
+}
+
+h1 {
+  margin: 0.25rem 0;
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.accent-line {
+  border: none;
+  height: 2px;
+  margin: 0.75rem auto 0.75rem;
+  width: 60%;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--btn-bg);
+  color: #e5e7eb;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.45);
+  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+.btn:hover {
+  background: var(--btn-bg-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.55);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.4);
+}
+
+.hint {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+.result-box {
+  margin-top: 1.25rem;
+  min-height: 2.4rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.6rem;
+  border: 1px solid var(--border-soft);
+  background: var(--accent-soft);
+  font-size: 0.95rem;
+  color: #e5e7eb;
+  display: flex;
+  align-items: center;
+}
+
+
+/* ============================
+   JAVASCRIPT SECTION: engine.js
+   ============================ */
+export function pickClue(clues, options = {}) {
+    // small helper: normalize whitespace
+    const safeTrim = (str) => str.replace(/\s+/g, " ").trim();
+
+    // small helper: detect suspicious punctuation patterns
+    const isSuspicious = (str) => /(\?{3,}|!{3,})/.test(str);
+
+    // config with optional features
+    const config = {
+        logging: options.logging || false,
+        seed: options.seed || null,
+        ultraRareChance: 0.01,
+        rareChance: 0.05,
+        maxLength: 120
+    };
+
+    // optional seeded RNG
+    let rng = Math.random;
+    if (config.seed !== null) {
+        let s = config.seed % 2147483647;
+        if (s <= 0) s += 2147483646;
+        rng = () => (s = s * 16807 % 2147483647) / 2147483647;
+    }
+
+    const log = (...msg) => {
+        if (config.logging) console.log("[engine]", ...msg);
+    };
+
+    // safety: missing list
+    if (!clues || clues.length === 0) {
+        log("no clues provided");
+        return "no clues available";
+    }
+
+    // sanitize + trim
+    clues = clues.map(c => safeTrim(c));
+
+    // remove empty
+    clues = clues.filter(c => c !== "");
+
+    // remove duplicates
+    clues = [...new Set(clues)];
+
+    // length rule
+    clues = clues.filter(c => c.length <= config.maxLength);
+
+    // if everything got filtered out
+    if (clues.length === 0) {
+        log("all clues filtered out");
+        return "no valid clues";
+    }
+
+    // rarity roll
+    const roll = rng();
+    log("rarity roll:", roll.toFixed(4));
+
+    if (roll < config.ultraRareChance) {
+        log("ultra rare triggered");
+        return "💎 ultra‑rare clue discovered";
+    }
+
+    if (roll < config.rareChance) {
+        log("rare triggered");
+        return "✨ rare clue found";
+    }
+
+    // weighted scoring system
+    const scored = clues.map(c => {
+        let weight = 1;
+
+        // keyword boosts
+        const lower = c.toLowerCase();
+        if (lower.includes("secret")) weight += 2;
+        if (lower.includes("warning")) weight += 1;
+
+        // short clues get a tiny boost
+        if (c.length < 40) weight += 0.5;
+
+        // suspicious punctuation gets a tiny penalty
+        if (isSuspicious(c)) {
+            weight -= 0.25;
+            log("suspicious punctuation detected:", c);
+        }
+
+        return { text: c, weight };
+    });
+
+    // compute total weight
+    const totalWeight = scored.reduce((sum, item) => sum + item.weight, 0);
+
+    // weighted pick
+    let pick = rng() * totalWeight;
+
+    for (const item of scored) {
+        if (pick < item.weight) {
+            log("picked:", item.text);
+            return item.text;
+        }
+        pick -= item.weight;
+    }
+
+    // fallback (should never hit)
+    log("fallback triggered");
+    return clues[0];
+}
+
+// simple browser wiring example
+document.addEventListener("DOMContentLoaded", () => {
+    const button = document.getElementById("pick");
+    const resultBox = document.getElementById("result");
+
+    if (!button || !resultBox) return;
+
+    const demoClues = [
+        "secret path behind the waterfall",
+        "warning: the door locks automatically",
+        "look up at the third window",
+        "follow the blue markings on the floor",
+        "the key is under the loose tile"
+    ];
+
+    button.addEventListener("click", () => {
+        const clue = pickClue(demoClues, { logging: false });
+        resultBox.textContent = clue || "No clue available — try again!";
+    });
+});
+
+
+# ============================
+# PYTHON SECTION: clue_tools.py
+# ============================
 import random
 import string
 from typing import Dict, List
@@ -81,424 +360,101 @@ if __name__ == "__main__":
     print("emphasize:", emphasize_clue(sample))
     print("batch:", batch_process([sample, "another clue"]))
 
-###############################################
-# JAVASCRIPT SECTION
-###############################################
-/*
-javascript: clue utilities for formatting and randomization
-run with: node clue_multilang.poly (after extraction)
-*/
 
-function jsReverse(text) {
-    return text.split("").reverse().join("");
+// ============================
+// RUST SECTION: demo.rs
+// ============================
+use rand::seq::SliceRandom;
+use rand::thread_rng;
+
+// load all clues
+fn load_clues() -> Vec<&'static str> {
+    vec![
+        "the sky is blue",
+        "rust is fast",
+        "python is friendly",
+        "clues are fun",
+        "coding builds skill",
+    ]
 }
 
-function jsUpper(text) {
-    return text.toUpperCase();
+// pick a single random clue
+fn pick_random_clue(clues: &[&str]) -> Option<&str> {
+    let mut rng = thread_rng();
+    clues.choose(&mut rng).copied()
 }
 
-function jsLower(text) {
-    return text.toLowerCase();
-}
-
-function jsShuffle(text) {
-    return text
-        .split("")
-        .sort(() => Math.random() - 0.5)
-        .join("");
-}
-
-function jsMaskVowels(text, mask = "*") {
-    return text.replace(/[aeiouAEIOU]/g, mask);
-}
-
-function jsStats(text) {
-    const words = text.trim().split(/\s+/).filter(Boolean);
-    const length = text.length;
-    const wordCount = words.length;
-    const avgWordLength =
-        wordCount === 0
-            ? 0
-            : words.reduce((sum, w) => sum + w.length, 0) / wordCount;
-    const uniqueChars = new Set(text.split("")).size;
-    return { length, wordCount, avgWordLength, uniqueChars };
-}
-
-function jsPreview(text) {
-    const stats = jsStats(text);
-    return `clue: ${text} | length=${stats.length} words=${stats.wordCount}`;
-}
-
-const jsSample = "example clue for javascript";
-console.log("js reverse:", jsReverse(jsSample));
-console.log("js upper:", jsUpper(jsSample));
-console.log("js shuffle:", jsShuffle(jsSample));
-console.log("js masked:", jsMaskVowels(jsSample));
-console.log("js stats:", jsStats(jsSample));
-console.log("js preview:", jsPreview(jsSample));
-
-
-###############################################
-# HTML SECTION
-###############################################
-<!--
-html: simple ui for clue preview and transformation
-open this file in a browser after extraction
--->
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>clue preview ui</title>
-    <style>
-        body {
-            font-family: system-ui, sans-serif;
-            background: #f5f5f5;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 640px;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 16px 20px 24px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-        }
-        h1 {
-            font-size: 20px;
-            margin-bottom: 12px;
-        }
-        textarea {
-            width: 100%;
-            min-height: 80px;
-            padding: 8px;
-            font-family: monospace;
-            font-size: 14px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-        button {
-            margin-top: 8px;
-            margin-right: 6px;
-            padding: 6px 10px;
-            font-size: 13px;
-            border-radius: 4px;
-            border: 1px solid #888;
-            background: #fafafa;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #f0f0f0;
-        }
-        .output {
-            margin-top: 12px;
-            padding: 8px;
-            background: #f9f9f9;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 13px;
-            border: 1px solid #ddd;
-            white-space: pre-wrap;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>clue preview</h1>
-        <textarea id="clueInput">example clue from html ui</textarea>
-        <div>
-            <button onclick="doReverse()">reverse</button>
-            <button onclick="doUpper()">upper</button>
-            <button onclick="doStats()">stats</button>
-        </div>
-        <div id="output" class="output"></div>
-    </div>
-    <script>
-        function getText() {
-            return document.getElementById("clueInput").value;
-        }
-        function setOutput(text) {
-            document.getElementById("output").textContent = text;
-        }
-        function doReverse() {
-            const t = getText();
-            setOutput(t.split("").reverse().join(""));
-        }
-        function doUpper() {
-            const t = getText();
-            setOutput(t.toUpperCase());
-        }
-        function doStats() {
-            const t = getText();
-            const words = t.trim().split(/\s+/).filter(Boolean);
-            const stats = {
-                length: t.length,
-                words: words.length
-            };
-            setOutput("length=" + stats.length + " words=" + stats.words);
-        }
-    </script>
-</body>
-</html>
-
-
-###############################################
-# CSS SECTION
-###############################################
-/*
-css: standalone styling for a potential external clue ui
-after extraction, this can be linked from an html file
-*/
-
-:root {
-    --bg: #101014;
-    --panel: #181820;
-    --accent: #4f8cff;
-    --text-main: #f5f5f7;
-    --text-muted: #a0a0b0;
-}
-
-body.clue-theme {
-    background: var(--bg);
-    color: var(--text-main);
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    margin: 0;
-    padding: 24px;
-}
-
-.clue-panel {
-    max-width: 720px;
-    margin: 0 auto;
-    background: var(--panel);
-    border-radius: 10px;
-    padding: 18px 20px 22px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-}
-
-.clue-panel h1 {
-    font-size: 20px;
-    margin: 0 0 10px;
-}
-
-.clue-panel p.description {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin: 0 0 12px;
-}
-
-.clue-panel textarea {
-    width: 100%;
-    min-height: 90px;
-    border-radius: 6px;
-    border: 1px solid #333645;
-    background: #111119;
-    color: var(--text-main);
-    padding: 8px;
-    font-family: monospace;
-    font-size: 13px;
-    box-sizing: border-box;
-}
-
-.clue-panel .actions {
-    margin-top: 10px;
-}
-
-.clue-panel button {
-    background: var(--accent);
-    color: #ffffff;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 12px;
-    font-size: 13px;
-    cursor: pointer;
-    margin-right: 6px;
-}
-
-.clue-panel button.secondary {
-    background: transparent;
-    border: 1px solid #3a3a4a;
-    color: var(--text-main);
-}
-
-.clue-panel button:hover {
-    filter: brightness(1.05);
-}
-
-.clue-panel .output {
-    margin-top: 12px;
-    padding: 8px;
-    background: #111119;
-    border-radius: 6px;
-    border: 1px solid #333645;
-    font-family: monospace;
-    font-size: 13px;
-    white-space: pre-wrap;
-}
-
-
-###############################################
-# RUST SECTION
-###############################################
-// rust: simple clue utilities library
-// after extraction, save as clue_tools.rs and compile with `rustc clue_tools.rs`
-
-fn reverse(s: &str) -> String {
-    s.chars().rev().collect()
-}
-
-fn upper(s: &str) -> String {
-    s.to_uppercase()
-}
-
-fn lower(s: &str) -> String {
-    s.to_lowercase()
-}
-
-fn word_count(s: &str) -> usize {
-    s.split_whitespace().count()
-}
-
-fn unique_chars(s: &str) -> usize {
-    use std::collections::HashSet;
-    let mut set = HashSet::new();
-    for ch in s.chars() {
-        set.insert(ch);
+// preview 3 random clues
+fn preview_random_clues(clues: &[&str]) {
+    let mut rng = thread_rng();
+    println!("\n--- previewing 3 random clues ---");
+    for c in clues.choose_multiple(&mut rng, 3) {
+        println!("• {}", c);
     }
-    set.len()
 }
 
-fn stats(s: &str) -> (usize, usize, usize) {
-    let len = s.len();
-    let words = word_count(s);
-    let uniq = unique_chars(s);
-    (len, words, uniq)
+// show total count
+fn show_total(clues: &[&str]) {
+    println!("\ntotal clues available: {}", clues.len());
 }
 
-fn mask_vowels(s: &str, mask: char) -> String {
-    let vowels = "aeiouAEIOU";
-    s.chars()
-        .map(|c| if vowels.contains(c) { mask } else { c })
-        .collect()
+// print menu
+fn show_menu() {
+    println!("\n=== rust demo menu ===");
+    println!("1. pick a clue");
+    println!("2. preview 3 random clues");
+    println!("3. exit");
+    println!("4. show total clues");
+    println!("======================");
 }
 
-fn preview(s: &str) -> String {
-    let (len, words, uniq) = stats(s);
-    format!("clue: {} | len={} words={} unique={}", s, len, words, uniq)
+// read user input trimmed
+fn read_choice() -> String {
+    let mut input = String::new();
+    std::io::stdin().read_line(&mut input).unwrap();
+    input.trim().to_string()
 }
 
 fn main() {
-    let sample = "example clue for rust";
-    println!("rust reverse: {}", reverse(sample));
-    println!("rust upper: {}", upper(sample));
-    println!("rust lower: {}", lower(sample));
-    println!("rust mask vowels: {}", mask_vowels(sample, '*'));
-    let (len, words, uniq) = stats(sample);
-    println!("rust stats: len={} words={} unique={}", len, words, uniq);
-    println!("rust preview: {}", preview(sample));
+    let clues = load_clues();
+
+    loop {
+        show_menu();
+        let choice = read_choice();
+
+        match choice.as_str() {
+            "1" => {
+                match pick_random_clue(&clues) {
+                    Some(c) => println!("\npicked clue: {}", c),
+                    None => println!("\nno clues available"),
+                }
+            }
+            "2" => preview_random_clues(&clues),
+            "3" => {
+                println!("goodbye!");
+                break;
+            }
+            "4" => show_total(&clues),
+            _ => println!("invalid choice"),
+        }
+    }
 }
 
 
-###############################################
-# FORTRAN SECTION (for fun, a bit more)
-###############################################
-C fortran: simple clue utilities
-C after extraction, save as clue_tools.f90 and compile with:
-C   gfortran clue_tools.f90 -o clue_tools
+! ============================
+! FORTRAN SECTION: clue_demo.f90
+! ============================
+program clue_demo
+  implicit none
+  character(len=*), parameter :: clues(3) = [ &
+       "fortran still lives", &
+       "clues can be classic", &
+       "arrays start at one" ]
 
-      PROGRAM CLUE_MAIN
-      IMPLICIT NONE
-      CHARACTER(LEN=80) :: CLUE
-      INTEGER :: L, W, I
-      CHARACTER(LEN=1) :: C
-      LOGICAL :: INWORD
+  integer :: i
 
-      CLUE = "example clue for fortran utilities"
-      CALL CLUE_STATS(CLUE, L, W)
-      PRINT *, "fortran clue: ", TRIM(CLUE)
-      PRINT *, "length:", L, "words:", W
-
-      PRINT *, "masked vowels:"
-      CALL MASK_VOWELS(CLUE)
-
-      PRINT *, "uppercase:"
-      CALL TO_UPPER(CLUE)
-
-      PRINT *, "character codes:"
-      DO I = 1, LEN_TRIM(CLUE)
-         C = CLUE(I:I)
-         PRINT *, I, C, ICHAR(C)
-      END DO
-
-      END PROGRAM CLUE_MAIN
-
-
-      SUBROUTINE CLUE_STATS(TEXT, LENGTH, WORDS)
-      IMPLICIT NONE
-      CHARACTER(LEN=*), INTENT(IN) :: TEXT
-      INTEGER, INTENT(OUT) :: LENGTH, WORDS
-      INTEGER :: I, N
-      CHARACTER(LEN=1) :: C
-      LOGICAL :: INWORD
-
-      N = LEN_TRIM(TEXT)
-      LENGTH = N
-      WORDS = 0
-      INWORD = .FALSE.
-
-      DO I = 1, N
-         C = TEXT(I:I)
-         IF (C .EQ. ' ') THEN
-            IF (INWORD) THEN
-               INWORD = .FALSE.
-            END IF
-         ELSE
-            IF (.NOT. INWORD) THEN
-               WORDS = WORDS + 1
-               INWORD = .TRUE.
-            END IF
-         END IF
-      END DO
-
-      END SUBROUTINE CLUE_STATS
-
-
-      SUBROUTINE MASK_VOWELS(TEXT)
-      IMPLICIT NONE
-      CHARACTER(LEN=*), INTENT(IN) :: TEXT
-      INTEGER :: I, N
-      CHARACTER(LEN=1) :: C
-
-      N = LEN_TRIM(TEXT)
-      DO I = 1, N
-         C = TEXT(I:I)
-         IF (C .EQ. 'A' .OR. C .EQ. 'E' .OR. C .EQ. 'I' .OR.
-     &       C .EQ. 'O' .OR. C .EQ. 'U' .OR.
-     &       C .EQ. 'a' .OR. C .EQ. 'e' .OR. C .EQ. 'i' .OR.
-     &       C .EQ. 'o' .OR. C .EQ. 'u') THEN
-            WRITE(*,'(A)', ADVANCE='NO') '*'
-         ELSE
-            WRITE(*,'(A)', ADVANCE='NO') C
-         END IF
-      END DO
-      WRITE(*,*)
-      END SUBROUTINE MASK_VOWELS
-
-
-      SUBROUTINE TO_UPPER(TEXT)
-      IMPLICIT NONE
-      CHARACTER(LEN=*), INTENT(IN) :: TEXT
-      INTEGER :: I, N
-      CHARACTER(LEN=1) :: C
-
-      N = LEN_TRIM(TEXT)
-      DO I = 1, N
-         C = TEXT(I:I)
-         IF (C .GE. 'a' .AND. C .LE. 'z') THEN
-            C = CHAR(ICHAR(C) - 32)
-         END IF
-         WRITE(*,'(A)', ADVANCE='NO') C
-      END DO
-      WRITE(*,*)
-      END SUBROUTINE TO_UPPER
+  print *, "Fortran clue demo:"
+  do i = 1, size(clues)
+     print *, " - ", trim(clues(i))
+  end do
+end program clue_demo
