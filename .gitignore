@@ -19,3 +19,11 @@ build/
 # logs and temp files
 *.log
 *.tmp
+
+# virtual environments
+.venv/
+venv/
+
+# local environment files
+.env
+.env.local
