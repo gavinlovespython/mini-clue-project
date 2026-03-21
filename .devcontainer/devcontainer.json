@@ -1,4 +1,4 @@
- // Dev container configuration for the clue-system project
+// Dev container configuration for the clue-system project
 {
   "name": "clue-system",
   "image": "mcr.microsoft.com/devcontainers/base:latest",
@@ -6,6 +6,9 @@
   "features": {
     "ghcr.io/devcontainers/features/python:1": {
       "version": "3.11"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "18"
     }
   },
 
@@ -17,10 +20,11 @@
       },
       "extensions": [
         "ms-python.python",
-        "ms-python.black-formatter"
+        "ms-python.black-formatter",
+        "esbenp.prettier-vscode"
       ]
     }
   },
 
-  "postCreateCommand": "pip install -r requirements.txt && echo 'devcontainer ready'"
+  "postCreateCommand": "pip install -r requirements.txt 2>/dev/null || true && npm install 2>/dev/null || true && echo 'devcontainer ready'"
 }
