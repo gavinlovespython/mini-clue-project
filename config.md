@@ -12,6 +12,17 @@ this file defines adjustable settings for the clue engine.
 - output_format: "text"
 - logging: false
 
+## supported languages
+
+these languages are available for future formatting, demos, or code‑style clues.
+
+- python
+- javascript
+- html
+- css
+- rust
+- fortran (experimental / for fun)
+
 ## future settings
 
 (these are ideas for later expansion)
