@@ -13,8 +13,11 @@ program clue_demo
 
   integer :: i
 
-  print *, "Fortran clue demo:"
-  print *, "-------------------"
+  print *, "========================="
+  print *, "   Fortran Clue Demo"
+  print *, "========================="
+  print *, "Total clues:", size(clues)
+  print *, ""
 
   do i = 1, size(clues)
      print *, " - ", trim(clues(i))
