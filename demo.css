@@ -6,6 +6,7 @@ body {
   color: #222;
 }
 
+/* container */
 .container {
   max-width: 600px;
   margin: 0 auto;
@@ -41,6 +42,7 @@ button:active {
   background: white;
   border-radius: 6px;
   animation: fadeIn 0.25s ease;
+  border: 1px solid #eee; /* tiny polish */
 }
 
 /* fade-in animation */
@@ -49,8 +51,9 @@ button:active {
   to   { opacity: 1; }
 }
 
-/* accent line + tiny polish */
+/* accent line */
 .accent-line {
   border: 0;
   border-top: 1px solid #ddd;
+  margin: 20px 0; /* tiny polish */
 }
