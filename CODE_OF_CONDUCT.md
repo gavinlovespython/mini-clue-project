@@ -1,12 +1,21 @@
 # code of conduct
 
-this project is meant to be a friendly place to learn and experiment.
-to keep things positive, here are a few simple rules:
+this project is meant to be a friendly place to learn, experiment, and build things together.  
+to keep the space positive and productive, please follow these simple guidelines:
 
-- be respectful when giving feedback
-- keep comments focused on the project
-- ask questions if you're unsure about something
-- help others learn when you can
-- no harassment, spam, or rude behavior
+## how we work together
 
-if something feels off or confusing, open an issue and we’ll figure it out together.
+- be respectful when giving feedback  
+- keep comments focused on the project and the work  
+- ask questions whenever something is unclear  
+- help others learn when you can  
+- no harassment, spam, or rude behavior of any kind  
+
+## if something goes wrong
+
+if something feels off, confusing, or uncomfortable, open an issue.  
+we’ll look at it together and figure out the best way forward.
+
+## our goal
+
+create a small, supportive environment where ideas can grow and everyone feels welcome to contribute.
