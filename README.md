@@ -50,3 +50,5 @@ demo implementations (optional):
 ```python
 result = pick_clue_with_config()
 print("chosen clue:", result)
+
+<!-- badge test line -->
